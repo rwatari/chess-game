@@ -30,6 +30,11 @@ class Board
 
   end
 
+  def in_bounds?(pos)
+    x, y = pos
+    x.between?(0, 7) && y.between?(0, 7)
+  end
+
   protected
 
   def make_starting_grid
