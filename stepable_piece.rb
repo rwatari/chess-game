@@ -5,7 +5,7 @@ module Stepable
   def moves
     poss_moves = []
     move_dirs.each do |dir|
-      curr_pos = update_pos(pos, dir)
+      curr_pos = get_pos(pos, dir)
       next unless self.board.in_bounds?(curr_pos)
       next if self.board[curr_pos].same_team?(self)
       poss_moves << curr_pos

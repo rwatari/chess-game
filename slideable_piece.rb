@@ -18,7 +18,7 @@ module Slideable
   def moves
     poss_moves = []
     move_dirs.each do |dir|
-      curr_pos = update_pos(pos, dir)
+      curr_pos = get_pos(pos, dir)
       while self.board.in_bounds?(curr_pos)
         if self.board[curr_pos].is_a?(NullPiece)
           poss_moves << curr_pos
@@ -29,7 +29,7 @@ module Slideable
           poss_moves << curr_pos
           break
         end
-        curr_pos = update_pos(curr_pos, dir)
+        curr_pos = get_pos(curr_pos, dir)
 
       end
     end

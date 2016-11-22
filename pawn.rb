@@ -10,14 +10,14 @@ class Pawn < Piece
     poss_moves = []
 
     diag_dirs.each do |dir|
-      new_pos = update_pos(pos, dir)
+      new_pos = get_pos(pos, dir)
       other = @board[new_pos]
       next if other.is_a?(NullPiece) || other.same_team?(self)
       poss_moves << new_pos
     end
 
     straight_dirs.each do |dir|
-      new_pos = update_pos(pos, dir)
+      new_pos = get_pos(pos, dir)
       other = @board[new_pos]
       break unless other.is_a?(NullPiece)
       poss_moves << new_pos

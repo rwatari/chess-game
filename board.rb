@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'all_pieces'
 class Board
   def initialize
     make_starting_grid
@@ -15,19 +15,29 @@ class Board
   end
 
   def move_piece(start_pos, end_pos)
-    check_pos(start_pos)
-    check_move(end_pos)
-    self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+    start_piece = self[start_pos]
+    check_start(start_piece)
+    check_move(start_piece, end_pos)
+    switch_pieces(start_pos, end_pos)
   end
 
-  def check_pos(pos)
-    if self[pos].nil?
+  def switch_pieces(start_pos, end_pos)
+    unless self[end_pos].is_a?(NullPiece)
+      # set end pos to nullpiece
+      self[end_pos] = NullPiece.instance
+    end
+    self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+    self[end_pos].update_pos(end_pos)
+  end
+
+  def check_start(piece)
+    if piece.is_a?(NullPiece)
       raise "No piece here"
     end
   end
 
-  def check_move(pos)
-
+  def check_move(piece, pos)
+    raise "Invalid move" unless piece.moves.include?(pos)
   end
 
   def in_bounds?(pos)

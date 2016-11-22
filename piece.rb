@@ -16,10 +16,14 @@ class Piece
     @color == other_piece.color
   end
 
-  def update_pos(position, diff)
+  def get_pos(position, diff)
     diff_x, diff_y = diff
     x, y = position
     [x + diff_x, y + diff_y]
+  end
+
+  def update_pos(new_pos)
+    @pos = new_pos
   end
 end
 
@@ -38,4 +42,6 @@ class NullPiece < Piece
     " "
   end
 
+  def update_pos(pos)
+  end
 end
