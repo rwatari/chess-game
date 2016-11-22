@@ -13,12 +13,6 @@ module Stepable
 
     poss_moves
   end
-
-  def update_pos(position, diff)
-    diff_x, diff_y = diff
-    x, y = position
-    [x + diff_x, y + diff_y]
-  end
 end
 
 class King < Piece

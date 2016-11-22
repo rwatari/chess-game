@@ -15,6 +15,12 @@ class Piece
   def same_team?(other_piece)
     @color == other_piece.color
   end
+
+  def update_pos(position, diff)
+    diff_x, diff_y = diff
+    x, y = position
+    [x + diff_x, y + diff_y]
+  end
 end
 
 class NullPiece < Piece

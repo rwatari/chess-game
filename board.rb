@@ -41,8 +41,12 @@ class Board
     @grid = []
     8.times do |row|
       color = (row < 2 ? :black : :white)
-      if row.between?(1, 6)
+      if row.between?(2, 5)
         pieces_array = Array.new(8) { NullPiece.instance }
+      elsif row == 1 || row == 6
+        pieces_array = (0..7).map do |col|
+          Pawn.new(color, [row, col], self)
+        end
       else
         pieces_array = [
           Rook.new(color, [row, 0], self),
