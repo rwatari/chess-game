@@ -23,6 +23,11 @@ class Display
       arr << row_array.join(" | ")
     end
     puts arr.join("\n#{'-' * 29}\n")
+    if @board.in_check?(:black)
+      puts "Black is in check!"
+    elsif @board.in_check?(:white)
+      puts "White is in check!"
+    end
   end
 
   def colorize_cursor(str)
@@ -42,12 +47,7 @@ class Display
     end
   end
 
-  def render_loop
-    while true
-      render
-      @cursor.get_input
-    end
-  end
-
-
+  def get_input
+    @cursor.get_input
+  end 
 end
