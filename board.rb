@@ -42,7 +42,7 @@ class Board
   end
 
   def check_move(piece, pos)
-    raise "Invalid move" unless piece.moves.include?(pos)
+    raise "Invalid move" unless piece.valid_moves.include?(pos)
   end
 
   def in_bounds?(pos)

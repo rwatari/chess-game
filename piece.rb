@@ -25,6 +25,14 @@ class Piece
   def update_pos(new_pos)
     @pos = new_pos
   end
+
+  def valid_moves
+    moves.reject do |move|
+      new_board = @board.dup
+      new_board.switch_pieces(self.pos, move)
+      new_board.in_check?(self.color)
+    end
+  end
 end
 
 class NullPiece < Piece
