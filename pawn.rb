@@ -11,6 +11,7 @@ class Pawn < Piece
 
     diag_dirs.each do |dir|
       new_pos = get_pos(pos, dir)
+      next unless @board.in_bounds?(new_pos)
       other = @board[new_pos]
       next if other.is_a?(NullPiece) || other.same_team?(self)
       poss_moves << new_pos
@@ -18,6 +19,7 @@ class Pawn < Piece
 
     straight_dirs.each do |dir|
       new_pos = get_pos(pos, dir)
+      next unless @board.in_bounds?(new_pos)
       other = @board[new_pos]
       break unless other.is_a?(NullPiece)
       poss_moves << new_pos
