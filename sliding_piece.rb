@@ -63,3 +63,23 @@ class Queen < Piece
     end
   end
 end
+
+class Rook < Piece
+  include Slideable
+  def initialize(color, pos, board)
+    super
+    @symbol = choose_symbol
+  end
+
+  def move_dirs
+    STRAIGHTS
+  end
+
+  def choose_symbol
+    if @color == :black
+      "\u{265C}"
+    else
+      "\u{2656}"
+    end
+  end
+end
