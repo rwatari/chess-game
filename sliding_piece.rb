@@ -20,7 +20,7 @@ module Slideable
     move_dirs.each do |dir|
       curr_pos = update_pos(pos, dir)
       while self.board.in_bounds?(curr_pos)
-        if self.board[curr_pos] == nil
+        if self.board[curr_pos].is_a?(NullPiece) 
           poss_moves << curr_pos
         elsif self.board[curr_pos].same_team?(self)
           break
