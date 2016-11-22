@@ -1,7 +1,12 @@
 require_relative 'all_pieces'
+require 'byebug'
 class Board
-  def initialize
-    make_starting_grid
+  def initialize(grid = nil)
+    if grid.nil?
+      make_starting_grid
+    else
+      @grid = grid
+    end
   end
 
   def [](pos)
@@ -43,6 +48,55 @@ class Board
   def in_bounds?(pos)
     x, y = pos
     x.between?(0, 7) && y.between?(0, 7)
+  end
+
+  def in_check?(color)
+    king = find_king(color)
+    opponent_pieces = @grid.flatten.reject do |piece|
+      piece.is_a?(NullPiece) || king.same_team?(piece)
+    end
+
+    opponent_pieces.any? do |piece|
+      piece.moves.include?(king.pos)
+    end
+  end
+
+  def find_king(color)
+    #returns king instance of matching color
+    @grid.flatten.each do |piece|
+      return piece if piece.is_a?(King) && piece.color == color
+    end
+  end
+
+  def checkmate?(color)
+    return false unless in_check?(color)
+
+    our_pieces = @grid.flatten.select do |piece|
+      piece.color == color
+    end
+
+    our_pieces.all? { |piece| piece.valid_moves.empty? }
+  end
+
+  def dup
+    dup_grid = @grid.map { |row| row.dup }
+
+    new_board = Board.new(dup_grid)
+
+    8.times do |row|
+      8.times do |col|
+        piece = new_board[[row, col]]
+        if piece.is_a?(NullPiece)
+          new_piece = NullPiece.instance
+        else
+          new_piece = piece.class.new(piece.color, [row, col], new_board)
+        end
+
+        new_board[[row,col]] = new_piece
+      end
+    end
+
+    new_board
   end
 
   protected
