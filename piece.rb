@@ -6,6 +6,10 @@ class Piece
     @board = board
   end
 
+  def to_s
+    @symbol 
+  end
+
   def same_team?(other_piece)
     @color == other_piece.color
   end

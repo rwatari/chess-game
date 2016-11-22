@@ -43,3 +43,23 @@ module Slideable
     [x + diff_x, y + diff_y]
   end
 end
+
+class Queen < Piece
+  include Slideable
+  def initialize(color, pos, board)
+    super
+    @symbol = choose_symbol
+  end
+
+  def move_dirs
+    DIAGONALS + STRAIGHTS
+  end
+
+  def choose_symbol
+    if @color == :black
+      "\u{265B}"
+    else
+      "\u{2655}"
+    end
+  end
+end
