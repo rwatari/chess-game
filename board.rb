@@ -39,12 +39,19 @@ class Board
 
   def make_starting_grid
     @grid = []
-    (0...8).each do |row|
-      if [0, 1, 6, 7].include?(row)
-        @grid << Array.new(8) { Piece.new }
-      else
-        @grid << Array.new(8) { nil }
+    8.times do |row|
+      temp_row = []
+      color = (row < 2 ? :black : :white)
+
+      8.times do |col|
+        if row.between?(2, 5)
+          temp_row << nil
+        else
+          temp_row << Queen.new(color, [row, col], self)
+        end
       end
+
+      @grid << temp_row
     end
   end
 end

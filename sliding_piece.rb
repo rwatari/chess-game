@@ -83,3 +83,22 @@ class Rook < Piece
     end
   end
 end
+
+class Bishop < Piece
+  include Slideable
+  def initialize(color, pos, board)
+    super
+    @symbol = choose_symbol
+  end
+
+  def move_dirs
+    DIAGONALS
+  end
+
+  def choose_symbol
+    if @color == :black
+      "\u{265D}"
+    else
+      "\u{2657}"
+    end
+  end

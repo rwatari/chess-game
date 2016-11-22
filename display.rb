@@ -38,7 +38,7 @@ class Display
     when nil
       " "
     else
-      "p"
+      @board[pos].to_s
     end
   end
 
