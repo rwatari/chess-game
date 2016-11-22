@@ -102,3 +102,4 @@ class Bishop < Piece
       "\u{2657}"
     end
   end
+end
