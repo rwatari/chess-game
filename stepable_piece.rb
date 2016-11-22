@@ -20,3 +20,61 @@ module Stepable
     [x + diff_x, y + diff_y]
   end
 end
+
+class King < Piece
+  include Stepable
+  def initialize(color, pos, board)
+    super
+    @symbol = choose_symbol
+  end
+
+  def move_dirs
+    [
+      [ 1,  1],
+      [ 1, -1],
+      [-1,  1],
+      [-1, -1],
+      [ 0,  1],
+      [ 0, -1],
+      [ 1,  0],
+      [-1,  0]
+    ]
+  end
+
+  def choose_symbol
+    if @color == :black
+      "\u{265A}"
+    else
+      "\u{2654}"
+    end
+  end
+end
+
+class Knight < Piece
+  include Stepable
+  def initialize(color, pos, board)
+    super
+    @symbol = choose_symbol
+  end
+
+  def move_dirs
+    [
+      [ 1,  2],
+      [ 1, -2],
+      [-1,  2],
+      [-1, -2],
+      [ 2,  1],
+      [ 2, -1],
+      [-2, -1],
+      [-2,  1]
+    ]
+  end
+
+  def choose_symbol
+    if @color == :black
+      "\u{265E}"
+    else
+      "\u{2658}"
+    end
+  end
+end
