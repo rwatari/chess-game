@@ -29,7 +29,7 @@ class Piece
   def valid_moves
     moves.reject do |move|
       new_board = @board.dup
-      new_board.switch_pieces(self.pos, move)
+      new_board.move_piece!(self.pos, move)
       new_board.in_check?(self.color)
     end
   end

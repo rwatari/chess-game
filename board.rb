@@ -2,11 +2,7 @@ require_relative 'all_pieces'
 require 'byebug'
 class Board
   def initialize(grid = nil)
-    if grid.nil?
-      make_starting_grid
-    else
-      @grid = grid
-    end
+    @grid ||= make_starting_grid
   end
 
   def [](pos)
@@ -26,23 +22,8 @@ class Board
     switch_pieces(start_pos, end_pos)
   end
 
-  def switch_pieces(start_pos, end_pos)
-    unless self[end_pos].is_a?(NullPiece)
-      # set end pos to nullpiece
-      self[end_pos] = NullPiece.instance
-    end
-    self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
-    self[end_pos].update_pos(end_pos)
-  end
-
-  def check_start(piece)
-    if piece.is_a?(NullPiece)
-      raise "No piece here"
-    end
-  end
-
-  def check_move(piece, pos)
-    raise "Invalid move" unless piece.valid_moves.include?(pos)
+  def move_piece!(start_pos, end_pos)
+    switch_pieces(start_pos, end_pos)
   end
 
   def in_bounds?(pos)
@@ -58,13 +39,6 @@ class Board
 
     opponent_pieces.any? do |piece|
       piece.moves.include?(king.pos)
-    end
-  end
-
-  def find_king(color)
-    #returns king instance of matching color
-    @grid.flatten.each do |piece|
-      return piece if piece.is_a?(King) && piece.color == color
     end
   end
 
@@ -85,46 +59,79 @@ class Board
 
     8.times do |row|
       8.times do |col|
-        piece = new_board[[row, col]]
+        pos = [row, col]
+        piece = new_board[pos]
         if piece.is_a?(NullPiece)
           new_piece = NullPiece.instance
         else
-          new_piece = piece.class.new(piece.color, [row, col], new_board)
+          new_piece = piece.class.new(piece.color, pos, new_board)
         end
 
-        new_board[[row,col]] = new_piece
+        new_board[pos] = new_piece
       end
     end
 
     new_board
   end
 
-  protected
+  private
+
+  def check_start(piece)
+    raise "No piece here" if piece.is_a?(NullPiece)
+  end
+
+  def check_move(piece, pos)
+    raise "Invalid move" unless piece.valid_moves.include?(pos)
+  end
 
   def make_starting_grid
-    @grid = []
+    grid = []
     8.times do |row|
       color = (row < 2 ? :black : :white)
-      if row.between?(2, 5)
-        pieces_array = Array.new(8) { NullPiece.instance }
-      elsif row == 1 || row == 6
-        pieces_array = (0..7).map do |col|
-          Pawn.new(color, [row, col], self)
-        end
+      pieces_array = case row
+      when 0, 7
+        make_back_rank(color, row)
+      when 1, 6
+        make_pawn_rank(color, row)
       else
-        pieces_array = [
-          Rook.new(color, [row, 0], self),
-          Knight.new(color, [row, 1], self),
-          Bishop.new(color, [row, 2], self),
-          Queen.new(color, [row, 3], self),
-          King.new(color, [row, 4], self),
-          Bishop.new(color, [row, 5], self),
-          Knight.new(color, [row, 6], self),
-          Rook.new(color, [row, 7], self)
-        ]
+        Array.new(8){ NullPiece.instance }
       end
 
-      @grid << pieces_array
+      grid << pieces_array
+    end
+    grid
+  end
+
+  def make_pawn_rank(color, row)
+    (0..7).map {|col| Pawn.new(color, [row, col], self)}
+  end
+
+  def make_back_rank(color, row)
+    [
+      Rook.new(color, [row, 0], self),
+      Knight.new(color, [row, 1], self),
+      Bishop.new(color, [row, 2], self),
+      Queen.new(color, [row, 3], self),
+      King.new(color, [row, 4], self),
+      Bishop.new(color, [row, 5], self),
+      Knight.new(color, [row, 6], self),
+      Rook.new(color, [row, 7], self)
+    ]
+  end
+
+  def switch_pieces(start_pos, end_pos)
+    unless self[end_pos].is_a?(NullPiece)
+      # set end pos to nullpiece
+      self[end_pos] = NullPiece.instance
+    end
+    self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+    self[end_pos].update_pos(end_pos)
+  end
+
+  def find_king(color)
+    #returns king instance of matching color
+    @grid.flatten.each do |piece|
+      return piece if piece.is_a?(King) && piece.color == color
     end
   end
 end
