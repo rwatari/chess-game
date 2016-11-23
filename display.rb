@@ -7,22 +7,37 @@ class Display
     @cursor = Cursor.new([0,0], board)
   end
 
+  def get_input
+    @cursor.get_input
+  end
+
   def render
     system("clear")
     arr = []
     8.times do |row|
-      row_array = []
-      8.times do |col|
-        pos = [row, col]
-        str = render_pos(pos)
-        if @cursor.cursor_pos == pos
-          str = colorize_cursor(str)
-        end
-        row_array << str
-      end
+      row_array = render_row(row)
       arr << row_array.join(" | ")
     end
     puts arr.join("\n#{'-' * 29}\n")
+    in_check_message
+  end
+
+  private
+
+  def render_row(row)
+    row_array = []
+    8.times do |col|
+      pos = [row, col]
+      str = render_pos(pos)
+      if @cursor.cursor_pos == pos
+        str = colorize_cursor(str)
+      end
+      row_array << str
+    end
+    row_array
+  end
+
+  def in_check_message
     if @board.in_check?(:black)
       puts "Black is in check!"
     elsif @board.in_check?(:white)
@@ -47,7 +62,4 @@ class Display
     end
   end
 
-  def get_input
-    @cursor.get_input
-  end 
 end
