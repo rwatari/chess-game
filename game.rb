@@ -16,6 +16,7 @@ class Game
       play_turn
       switch_players
     end
+    @display.render
     puts "Checkmate! #{winner.name} wins"
   end
 
