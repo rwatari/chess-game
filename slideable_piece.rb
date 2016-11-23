@@ -19,18 +19,17 @@ module Slideable
     poss_moves = []
     move_dirs.each do |dir|
       curr_pos = get_pos(pos, dir)
-      while self.board.in_bounds?(curr_pos)
-        if self.board[curr_pos].is_a?(NullPiece)
+      while board.in_bounds?(curr_pos)
+        if board[curr_pos].is_a?(NullPiece)
           poss_moves << curr_pos
-        elsif self.board[curr_pos].same_team?(self)
+        elsif board[curr_pos].same_team?(self)
           break
-        else
-          #if opposing piece
+        else #if opposing piece
           poss_moves << curr_pos
           break
         end
-        curr_pos = get_pos(curr_pos, dir)
 
+        curr_pos = get_pos(curr_pos, dir)
       end
     end
 
@@ -45,16 +44,14 @@ class Queen < Piece
     @symbol = choose_symbol
   end
 
+  private
+
   def move_dirs
     DIAGONALS + STRAIGHTS
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265B}"
-    else
-      "\u{2655}"
-    end
+    @color == :black ? "\u{265B}" : "\u{2655}"
   end
 end
 
@@ -65,16 +62,14 @@ class Rook < Piece
     @symbol = choose_symbol
   end
 
+  private
+
   def move_dirs
     STRAIGHTS
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265C}"
-    else
-      "\u{2656}"
-    end
+    @color == :black ? "\u{265C}" : "\u{2656}"
   end
 end
 
@@ -85,15 +80,13 @@ class Bishop < Piece
     @symbol = choose_symbol
   end
 
+  private
+  
   def move_dirs
     DIAGONALS
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265D}"
-    else
-      "\u{2657}"
-    end
+    @color == :black ? "\u{265D}" : "\u{2657}"
   end
 end

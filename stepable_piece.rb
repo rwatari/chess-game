@@ -6,8 +6,8 @@ module Stepable
     poss_moves = []
     move_dirs.each do |dir|
       curr_pos = get_pos(pos, dir)
-      next unless self.board.in_bounds?(curr_pos)
-      next if self.board[curr_pos].same_team?(self)
+      next unless board.in_bounds?(curr_pos)
+      next if board[curr_pos].same_team?(self)
       poss_moves << curr_pos
     end
 
@@ -21,6 +21,8 @@ class King < Piece
     super
     @symbol = choose_symbol
   end
+
+  private
 
   def move_dirs
     [
@@ -36,11 +38,7 @@ class King < Piece
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265A}"
-    else
-      "\u{2654}"
-    end
+    @color == :black ? "\u{265A}" : "\u{2654}"
   end
 end
 
@@ -50,6 +48,8 @@ class Knight < Piece
     super
     @symbol = choose_symbol
   end
+
+  private
 
   def move_dirs
     [
@@ -65,10 +65,6 @@ class Knight < Piece
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265E}"
-    else
-      "\u{2658}"
-    end
+    @color == :black ? "\u{265E}" : "\u{2658}"
   end
 end

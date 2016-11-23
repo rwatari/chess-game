@@ -24,6 +24,7 @@ class HumanPlayer < Player
       puts "#{color.to_s.upcase}'s turn!"
       pos = @display.get_input
     end
+    
     pos
   end
 end

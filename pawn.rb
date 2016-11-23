@@ -6,34 +6,54 @@ class Pawn < Piece
     @symbol = choose_symbol
   end
 
+  # def moves
+  #   poss_moves = []
+  #
+  #   diag_dirs.each do |dir|
+  #     new_pos = get_pos(pos, dir)
+  #     next unless @board.in_bounds?(new_pos)
+  #     other = @board[new_pos]
+  #     next if other.is_a?(NullPiece) || other.same_team?(self)
+  #     poss_moves << new_pos
+  #   end
+  #
+  #   straight_dirs.each do |dir|
+  #     new_pos = get_pos(pos, dir)
+  #     next unless @board.in_bounds?(new_pos)
+  #     other = @board[new_pos]
+  #     break unless other.is_a?(NullPiece)
+  #     poss_moves << new_pos
+  #   end
+  #
+  #   poss_moves
+  # end
+
   def moves
     poss_moves = []
 
-    diag_dirs.each do |dir|
+    all_dirs = diag_dirs + straight_dirs
+    all_dirs.each_with_index do |dir, idx|
       new_pos = get_pos(pos, dir)
       next unless @board.in_bounds?(new_pos)
       other = @board[new_pos]
-      next if other.is_a?(NullPiece) || other.same_team?(self)
-      poss_moves << new_pos
-    end
 
-    straight_dirs.each do |dir|
-      new_pos = get_pos(pos, dir)
-      next unless @board.in_bounds?(new_pos)
-      other = @board[new_pos]
-      break unless other.is_a?(NullPiece)
+      if idx < diag_dirs.length
+        next if other.is_a?(NullPiece) || other.same_team?(self)
+      else
+        break unless other.is_a?(NullPiece)
+      end
+
       poss_moves << new_pos
     end
 
     poss_moves
   end
 
+  private
+
   def diag_dirs
-    if @color == :black
-      [[1, 1],[1, -1]]
-    else
-      [[-1, 1], [-1,-1]]
-    end
+    diff = @color == :black ? 1 : -1
+    [[diff, 1], [diff, -1]]
   end
 
   def first_row?
@@ -50,10 +70,6 @@ class Pawn < Piece
   end
 
   def choose_symbol
-    if @color == :black
-      "\u{265F}"
-    else
-      "\u{2659}"
-    end
+    @color == :black ? "\u{265F}" : "\u{2659}"
   end
 end

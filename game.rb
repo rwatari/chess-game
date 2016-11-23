@@ -19,18 +19,24 @@ class Game
     puts "Checkmate! #{winner.name} wins"
   end
 
+  private
+
   def play_turn
     player_color = @current_player.color
     start_pos, end_pos = @current_player.play_turn
-    if !@board[start_pos].is_a?(NullPiece) &&
-        @board[start_pos].color != player_color
-      raise "Not your piece!"
-    end
+    check_selected(start_pos, player_color)
     @board.move_piece(start_pos, end_pos)
   rescue RuntimeError => e
     puts e
     sleep(1)
     retry
+  end
+
+  def check_selected(start_pos, player_color)
+    if !@board[start_pos].is_a?(NullPiece) &&
+      @board[start_pos].color != player_color
+      raise "Not your piece!"
+    end
   end
 
   def game_over?
