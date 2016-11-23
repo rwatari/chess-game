@@ -2,7 +2,7 @@ require_relative 'all_pieces'
 require 'byebug'
 class Board
   def initialize(grid = nil)
-    @grid ||= make_starting_grid
+    @grid = grid || make_starting_grid
   end
 
   def [](pos)
