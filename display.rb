@@ -16,9 +16,9 @@ class Display
     arr = []
     8.times do |row|
       row_array = render_row(row)
-      arr << row_array.join(" | ")
+      arr << row_array.join("")
     end
-    puts arr.join("\n#{'-' * 29}\n")
+    puts arr.join("\n")
     in_check_message
   end
 
@@ -46,20 +46,13 @@ class Display
   end
 
   def colorize_cursor(str)
-    if @cursor.selected
-      str.colorize(:background => :light_green)
-    else
-      str.colorize(:background => :light_red)
-    end
+    color = @cursor.selected ? :light_green : :light_red
+    str.colorize(:background => color)
   end
 
   def render_pos(pos)
-    case @board[pos]
-    when nil
-      " "
-    else
-      @board[pos].to_s
-    end
+    color = pos.inject(:+).odd? ? :white : :light_grey
+    " #{@board[pos].to_s} ".colorize(:background => color)
   end
 
 end
